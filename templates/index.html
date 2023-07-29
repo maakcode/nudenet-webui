@@ -42,7 +42,6 @@
     function updateResult(response) {
       const resultNode = document.getElementById("result");
       Object.entries(response).forEach(([key, { safe, unsafe }]) => {
-        console.log(unsafe);
         const adult = unsafe > Number(resultNode.dataset.threshold)
 
         const containerNode = document.createElement("div");
