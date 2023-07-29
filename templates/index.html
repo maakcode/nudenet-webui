@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<Head>
+  <title>NudeNet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+  <style>
+    #input-image-textarea {
+      height: 700px;
+    }
+  </style>
+</Head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-3 text-center">
+        <form action="" class="py-3">
+          <button id="input-image-button" type="button" class="btn btn-primary mb-3">분류하기</button>
+          <div class="form-floating">
+            <textarea id="input-image-textarea" class="form-control" placeholder="입력할 이미지 URL 목록"></textarea>
+            <label for="input-image-textarea">입력할 이미지 URL 목록</label>
+          </div>
+        </form>
+      </div>
+      <div class="col-9 py-3">
+        <div id="result" class="row" />
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    function update(response) {
+      const resultNode = document.getElementById("result");
+      response.forEach(({ url, adult }) => {
+        const containerNode = document.createElement("div");
+        containerNode.setAttribute("class", "col-3");
+
+        const imageNode = document.createElement("img");
+        imageNode.setAttribute('class', `img-thumbnail ratio ratio-1x1 border-4 ${adult ? "border-danger" : "border-success"}`);
+        imageNode.setAttribute('src', url);
+
+        containerNode.appendChild(imageNode);
+        resultNode.appendChild(containerNode)
+      });
+    }
+
+    window.addEventListener("load", () => {
+      document.getElementById("input-image-button").addEventListener("click", () => {
+        console.log("onclick");
+        const urls = document.getElementById("input-image-textarea").value.split("\n");
+        if (!urls) { return; }
+
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = () => {
+          if (request.readyState !== XMLHttpRequest.DONE || request.status !== 200) { return; }
+          update(JSON.parse(request.responseText));
+        }
+
+        request.open("POST", "/process");
+        request.setRequestHeader(
+          "Content-Type",
+          "application/json",
+        );
+        request.send(JSON.stringify(urls));
+      });
+    })
+  </script>
+</body>
+
+</html>
