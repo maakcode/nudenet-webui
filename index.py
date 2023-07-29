@@ -2,6 +2,7 @@ from NudeNet import NudeClassifier
 from flask import Flask, render_template, request, make_response, send_file
 from PIL import Image
 from io import BytesIO
+from glob import glob
 import os, requests, json, mimetypes
 
 model = NudeClassifier()
@@ -12,6 +13,13 @@ app.debug = True
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/local")
+def local():
+    images = glob("images/*")
+    result = model.classify(images)
+    return render_template("local.html", result=result)
 
 
 @app.route("/process", methods=["POST"])

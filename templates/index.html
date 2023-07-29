@@ -17,14 +17,15 @@
       <div class="col-3 text-center">
         <form action="" class="py-3">
           <button id="input-image-button" type="button" class="btn btn-primary mb-3">분류하기</button>
-          <div class="form-floating">
-            <textarea id="input-image-textarea" class="form-control" placeholder="입력할 이미지 URL 목록"></textarea>
-            <label for="input-image-textarea">입력할 이미지 URL 목록</label>
-          </div>
+          <a class="btn btn-light mb-3" href="/local" target="_blank">파일로 테스트</a>
+            <div class="form-floating">
+              <textarea id="input-image-textarea" class="form-control" placeholder="입력할 이미지 URL 목록"></textarea>
+              <label for="input-image-textarea">입력할 이미지 URL 목록</label>
+            </div>
         </form>
       </div>
       <div class="col-9 py-3">
-        <div id="result" class="row" />
+        <div id="result" class="row g-2" />
       </div>
     </div>
   </div>
@@ -48,11 +49,11 @@
         containerNode.setAttribute("class", "col-3");
 
         const cardNode = document.createElement("div");
-        cardNode.setAttribute("class", `card ${adult ? "border-danger text-danger" : "border-success text-success"}`);
+        cardNode.setAttribute("class", `card h-100 text-light ${adult ? "bg-danger" : "bg-success"}`);
         containerNode.appendChild(cardNode);
 
         const imageNode = document.createElement("img");
-        imageNode.setAttribute("class", "card-img-top ratio");
+        imageNode.setAttribute("class", "card-img-top ratio ratio-1x1");
         imageNode.setAttribute("src", key);
         cardNode.appendChild(imageNode);
 
@@ -62,7 +63,7 @@
 
         const textNode = document.createElement("h4");
         textNode.setAttribute("class", "card-title text-center")
-        const textContent = document.createTextNode(`성인 ${Math.round(Number(unsafe) * 100)}%`)
+        const textContent = document.createTextNode(`성인 ${Math.round(unsafe * 100)}%`)
         textNode.appendChild(textContent)
         cardBodyNode.appendChild(textNode)
 
