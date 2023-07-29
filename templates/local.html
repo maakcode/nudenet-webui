@@ -2,14 +2,14 @@
 <html>
 
 <head>
-  <title>NudeNet</title>
+  <title>NudeNet Local Image Test</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
 </head>
 
 <body>
   <div class="container">
     <div class="row">
-      <a class="btn btn-primary my-3" href="/" target="_blank">분류하기</a>
+      <a class="btn btn-primary my-3" href="/" target="_blank">Test remote</a>
     </div>
     <div class="row g-2">
       {% for key, value in result.items() %}
@@ -17,7 +17,7 @@
         <div class="card h-100 text-light {{ 'bg-danger' if value.unsafe > threshold else 'bg-success' }}">
           <img class="card-img-top" src="{{ key|e }}" />
           <div class="card-body">
-            <h4 class="card-title text-center">성인 {{ (value.unsafe * 100)|round|int }}%</h4>
+            <h4 class="card-title text-center">Nudity {{ (value.unsafe * 100)|round|int }}%</h4>
           </div>
         </div>
       </div>
