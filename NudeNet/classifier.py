@@ -1,4 +1,4 @@
-import pathlib
+import pathlib, os, requests
 import numpy as np
 import onnxruntime
 from .image_utils import load_images
@@ -16,9 +16,21 @@ class Classifier:
         """
         model = Classifier()
         """
-        self.nsfw_model = onnxruntime.InferenceSession(
-            pathlib.Path(__file__).parent / "models/classifier_model.onnx"
-        )
+
+        model_directory = pathlib.Path(__file__).parent / "models"
+        if not os.path.exists(model_directory):
+            os.mkdir(model_directory)
+
+        model_path = os.path.join(model_directory, "classifier_model.onnx")
+
+        if not os.path.exists(model_path):
+            print("Please download the model to NudeNet/models/classifier_model.onnx")
+            print(
+                "https://github.com/notAI-tech/NudeNet/releases/download/v0/classifier_model.onnx"
+            )
+            exit(1)
+
+        self.nsfw_model = onnxruntime.InferenceSession(model_path)
 
     def classify(
         self,
