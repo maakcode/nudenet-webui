@@ -11,6 +11,8 @@ A browser interface for NudeNet classifier.
 
 ## Installation & Running
 
+0. Download [notAI-tech/NudeNet model](https://github.com/notAI-tech/NudeNet/releases/download/v0/classifier_model.onnx) to `NudeNet/models/classifier_model.onnx`
+
 1. Install the dependencies:
 
 ```bash
