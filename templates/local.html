@@ -14,7 +14,7 @@
     <div class="row g-2">
       {% for key, value in result.items() %}
       <div class="col-2">
-        <div class="card h-100 text-light {{ 'bg-danger' if value.unsafe > 0.5 else 'bg-success' }}">
+        <div class="card h-100 text-light {{ 'bg-danger' if value.unsafe > threshold else 'bg-success' }}">
           <img class="card-img-top" src="{{ key|e }}" />
           <div class="card-body">
             <h4 class="card-title text-center">성인 {{ (value.unsafe * 100)|round|int }}%</h4>

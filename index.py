@@ -5,6 +5,7 @@ from io import BytesIO
 from glob import glob
 import os, requests, json, mimetypes
 
+NUDE_THRESHOLD = 0.8
 model = NudeClassifier()
 app = Flask(__name__)
 app.debug = True
@@ -12,14 +13,14 @@ app.debug = True
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", threshold=NUDE_THRESHOLD)
 
 
 @app.route("/local")
 def local():
     images = glob("images/*")
     result = model.classify(images)
-    return render_template("local.html", result=result)
+    return render_template("local.html", result=result, threshold=NUDE_THRESHOLD)
 
 
 @app.route("/process", methods=["POST"])
@@ -48,7 +49,6 @@ def process():
 @app.route("/images/<name>", methods=["GET"])
 def images(name=None):
     path = f"./images/{name}"
-    print(os.path.isfile(path), path)
     if os.path.isfile(path):
         return send_file(path)
 

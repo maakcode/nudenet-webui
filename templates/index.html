@@ -25,7 +25,7 @@
         </form>
       </div>
       <div class="col-9 py-3">
-        <div id="result" class="row g-2" />
+        <div id="result" class="row g-2" data-threshold="{{ threshold }}" />
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
       const resultNode = document.getElementById("result");
       Object.entries(response).forEach(([key, { safe, unsafe }]) => {
         console.log(unsafe);
-        const adult = unsafe > 0.5;
+        const adult = unsafe > Number(resultNode.dataset.threshold)
 
         const containerNode = document.createElement("div");
         containerNode.setAttribute("class", "col-3");
