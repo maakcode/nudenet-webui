@@ -2,6 +2,8 @@
 
 A browser interface for NudeNet classifier.
 
+![](https://github.com/maakcode/nudenet-web/blob/main/banner.png)
+
 ## Features
 
 - Download and test image from image URL
