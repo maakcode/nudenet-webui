@@ -27,6 +27,8 @@ python app.py
 
 3. Open browser `http://127.0.0.1:5000`
 
+To test images in a local directory, put them in the `images` directory.
+
 ## Credits
 
 - Base implementation and model: <https://github.com/notAI-tech/NudeNet>
