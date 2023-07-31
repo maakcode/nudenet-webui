@@ -16,8 +16,13 @@
     <div class="row">
       <div class="col-3 text-center">
         <form action="" class="py-3">
-          <button id="input-image-button" type="button" class="btn btn-primary mb-3">Test remote</button>
-          <a class="btn btn-light mb-3" href="/local" target="_blank">Test local</a>
+          <div class="pb-3">
+            <a class="btn btn-light" href="/local" target="_blank">Test local</a>
+          </div>
+          <div class="pb-3">
+            <button id="input-image-button" type="button" class="btn btn-primary">Test remote</button>
+            <button id="clear-button" type="button" class="btn btn-outline-danger">Clear</button>
+          </div>
           <div class="form-floating">
             <textarea id="input-image-textarea" class="form-control" placeholder="Image urls"></textarea>
             <label for="input-image-textarea">Image urls</label>
@@ -90,9 +95,10 @@
         const urls = document.getElementById("input-image-textarea").value.split("\n");
         if (!urls) { return; }
 
-        clearResult();
         requestProcess(urls);
       });
+
+      document.getElementById("clear-button").addEventListener("click", clearResult);
     })
   </script>
 </body>
