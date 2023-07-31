@@ -1,106 +1,146 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>NudeNet Remote Image Test</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <style>
+      #input-image-textarea {
+        height: 700px;
+      }
+    </style>
+  </head>
 
-<Head>
-  <title>NudeNet Remote Image Test</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
-  <style>
-    #input-image-textarea {
-      height: 700px;
-    }
-  </style>
-</Head>
-
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-3 text-center">
-        <form action="" class="py-3">
-          <div class="pb-3">
-            <a class="btn btn-light" href="/local" target="_blank">Test local</a>
-          </div>
-          <div class="pb-3">
-            <button id="input-image-button" type="button" class="btn btn-primary">Test remote</button>
-            <button id="clear-button" type="button" class="btn btn-outline-danger">Clear</button>
-          </div>
-          <div class="form-floating">
-            <textarea id="input-image-textarea" class="form-control" placeholder="Image urls"></textarea>
-            <label for="input-image-textarea">Image urls</label>
-          </div>
-        </form>
-      </div>
-      <div class="col-9 py-3">
-        <div id="result" class="row g-2" data-threshold="{{ threshold }}" />
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-3 text-center">
+          <form action="" class="py-3">
+            <div class="pb-3">
+              <a class="btn btn-light" href="/local" target="_blank"
+                >Test local</a
+              >
+            </div>
+            <div class="pb-3">
+              <button
+                id="input-image-button"
+                type="button"
+                class="btn btn-primary"
+              >
+                Test remote
+              </button>
+              <button
+                id="clear-button"
+                type="button"
+                class="btn btn-outline-danger"
+              >
+                Clear
+              </button>
+            </div>
+            <div class="form-floating">
+              <textarea
+                id="input-image-textarea"
+                class="form-control"
+                placeholder="Image urls"
+              ></textarea>
+              <label for="input-image-textarea">Image urls</label>
+            </div>
+          </form>
+        </div>
+        <div class="col-9 py-3">
+          <div id="result" class="row g-2" data-threshold="{{ threshold }}" />
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    function clearResult() {
-      const resultNode = document.getElementById("result");
-      while (resultNode.firstChild) {
-        resultNode.removeChild(resultNode.firstChild);
-      }
-    }
-
-    function updateResult(response) {
-      const resultNode = document.getElementById("result");
-      Object.entries(response).forEach(([key, { safe, unsafe }]) => {
-        const adult = unsafe > Number(resultNode.dataset.threshold)
-
-        const containerNode = document.createElement("div");
-        containerNode.setAttribute("class", "col-3");
-
-        const cardNode = document.createElement("div");
-        cardNode.setAttribute("class", `card h-100 text-light ${adult ? "bg-danger" : "bg-success"}`);
-        containerNode.appendChild(cardNode);
-
-        const imageNode = document.createElement("img");
-        imageNode.setAttribute("class", "card-img-top ratio ratio-1x1");
-        imageNode.setAttribute("src", key);
-        cardNode.appendChild(imageNode);
-
-        const cardBodyNode = document.createElement("div");
-        cardBodyNode.setAttribute("class", "card-body");
-        cardNode.appendChild(cardBodyNode);
-
-        const textNode = document.createElement("h4");
-        textNode.setAttribute("class", "card-title text-center")
-        const textContent = document.createTextNode(`Nudity ${Math.round(unsafe * 100)}%`)
-        textNode.appendChild(textContent)
-        cardBodyNode.appendChild(textNode)
-
-        resultNode.appendChild(containerNode)
-      });
-    }
-
-    function requestProcess(urls) {
-      const request = new XMLHttpRequest();
-      request.onreadystatechange = () => {
-        if (request.readyState !== XMLHttpRequest.DONE || request.status !== 200) { return; }
-        updateResult(JSON.parse(request.responseText));
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      function clearResult() {
+        const resultNode = document.getElementById("result");
+        while (resultNode.firstChild) {
+          resultNode.removeChild(resultNode.firstChild);
+        }
       }
 
-      request.open("POST", "/process");
-      request.setRequestHeader(
-        "Content-Type",
-        "application/json",
-      );
-      request.send(JSON.stringify(urls));
-    }
+      function updateResult(response) {
+        const resultNode = document.getElementById("result");
+        Object.entries(response).forEach(([key, { safe, unsafe }]) => {
+          const adult = unsafe > Number(resultNode.dataset.threshold);
 
-    window.addEventListener("load", () => {
-      document.getElementById("input-image-button").addEventListener("click", () => {
-        const urls = document.getElementById("input-image-textarea").value.split("\n");
-        if (!urls) { return; }
+          const containerNode = document.createElement("div");
+          containerNode.setAttribute("class", "col-3");
 
-        requestProcess(urls);
+          const cardNode = document.createElement("div");
+          cardNode.setAttribute(
+            "class",
+            `card h-100 text-light ${adult ? "bg-danger" : "bg-success"}`
+          );
+          containerNode.appendChild(cardNode);
+
+          const imageNode = document.createElement("img");
+          imageNode.setAttribute("class", "card-img-top ratio ratio-1x1");
+          imageNode.setAttribute("src", key);
+          cardNode.appendChild(imageNode);
+
+          const cardBodyNode = document.createElement("div");
+          cardBodyNode.setAttribute("class", "card-body");
+          cardNode.appendChild(cardBodyNode);
+
+          const textNode = document.createElement("h4");
+          textNode.setAttribute("class", "card-title text-center");
+          const textContent = document.createTextNode(
+            `Nudity ${Math.round(unsafe * 100)}%`
+          );
+          textNode.appendChild(textContent);
+          cardBodyNode.appendChild(textNode);
+
+          resultNode.appendChild(containerNode);
+        });
+      }
+
+      function requestProcess(urls) {
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = () => {
+          if (
+            request.readyState !== XMLHttpRequest.DONE ||
+            request.status !== 200
+          ) {
+            return;
+          }
+          updateResult(JSON.parse(request.responseText));
+        };
+
+        request.open("POST", "/process");
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(JSON.stringify(urls));
+      }
+
+      window.addEventListener("load", () => {
+        document
+          .getElementById("input-image-button")
+          .addEventListener("click", () => {
+            const urls = document
+              .getElementById("input-image-textarea")
+              .value.split("\n");
+            if (!urls) {
+              return;
+            }
+
+            requestProcess(urls);
+          });
+
+        document
+          .getElementById("clear-button")
+          .addEventListener("click", clearResult);
       });
-
-      document.getElementById("clear-button").addEventListener("click", clearResult);
-    })
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
