@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, make_response, send_file
 from PIL import Image
 from io import BytesIO
 from glob import glob
-import os, requests, json, mimetypes
+import pathlib, os, requests, json, mimetypes
 
 NUDE_THRESHOLD = 0.8
 model = NudeClassifier()
@@ -29,6 +29,10 @@ def process():
 
     imageFiles = []
 
+    image_directory = "images"
+    if not os.path.exists(image_directory):
+        os.mkdir(image_directory)
+
     for image_url in image_urls:
         r = requests.get(image_url)
         i = Image.open(BytesIO(r.content))
@@ -37,7 +41,7 @@ def process():
         extension = mimetypes.guess_extension(
             r.headers.get("content-type", "").split(";")[0]
         )
-        imagePath = "images/" + tail.split("?")[0] + extension
+        imagePath = os.path.join(image_directory, tail.split("?")[0] + extension)
         i.save(imagePath)
         imageFiles.append(imagePath)
 
