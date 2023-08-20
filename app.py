@@ -18,7 +18,10 @@ def index():
 
 @app.route("/local")
 def local():
-    images = glob("images/*")
+    images = glob("images/*.png")
+    images.extend(glob("images/*.jpg"))
+    images.extend(glob("images/*.jpeg"))
+
     result = model.classify(images)
     return render_template("local.html", result=result, threshold=NUDE_THRESHOLD)
 
